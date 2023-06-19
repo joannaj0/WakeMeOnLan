@@ -1,0 +1,12 @@
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\WakeMeOnLan.exe.config
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\WakeMeOnLan.exe
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\WakeMeOnLan.pdb
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.AssemblyReference.cache
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.SuggestedBindingRedirects.cache
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.Form1.resources
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.Properties.Resources.resources
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.UserControlDane.resources
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.GenerateResource.cache
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.CoreCompileInputs.cache
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.exe
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.pdb
