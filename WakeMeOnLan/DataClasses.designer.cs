@@ -65,7 +65,7 @@ namespace WakeMeOnLan
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Siec> Siec
+		public System.Data.Linq.Table<Siec> Sieci
 		{
 			get
 			{
@@ -82,9 +82,9 @@ namespace WakeMeOnLan
 		
 		private int _Id;
 		
-		private string _Adres;
+		private string _Adres_IP;
 		
-		private string _Nazwa;
+		private string _Adres_MAC;
 		
 		private int _Czy_uspiony;
 		
@@ -94,10 +94,10 @@ namespace WakeMeOnLan
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnAdresChanging(string value);
-    partial void OnAdresChanged();
-    partial void OnNazwaChanging(string value);
-    partial void OnNazwaChanged();
+    partial void OnAdres_IPChanging(string value);
+    partial void OnAdres_IPChanged();
+    partial void OnAdres_MACChanging(string value);
+    partial void OnAdres_MACChanged();
     partial void OnCzy_uspionyChanging(int value);
     partial void OnCzy_uspionyChanged();
     #endregion
@@ -127,42 +127,42 @@ namespace WakeMeOnLan
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Adres", DbType="NVarChar(15) NOT NULL", CanBeNull=false)]
-		public string Adres
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Adres_IP", DbType="NVarChar(15) NOT NULL", CanBeNull=false)]
+		public string Adres_IP
 		{
 			get
 			{
-				return this._Adres;
+				return this._Adres_IP;
 			}
 			set
 			{
-				if ((this._Adres != value))
+				if ((this._Adres_IP != value))
 				{
-					this.OnAdresChanging(value);
+					this.OnAdres_IPChanging(value);
 					this.SendPropertyChanging();
-					this._Adres = value;
-					this.SendPropertyChanged("Adres");
-					this.OnAdresChanged();
+					this._Adres_IP = value;
+					this.SendPropertyChanged("Adres_IP");
+					this.OnAdres_IPChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nazwa", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Nazwa
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Adres_MAC", DbType="NVarChar(17) NOT NULL", CanBeNull=false)]
+		public string Adres_MAC
 		{
 			get
 			{
-				return this._Nazwa;
+				return this._Adres_MAC;
 			}
 			set
 			{
-				if ((this._Nazwa != value))
+				if ((this._Adres_MAC != value))
 				{
-					this.OnNazwaChanging(value);
+					this.OnAdres_MACChanging(value);
 					this.SendPropertyChanging();
-					this._Nazwa = value;
-					this.SendPropertyChanged("Nazwa");
-					this.OnNazwaChanged();
+					this._Adres_MAC = value;
+					this.SendPropertyChanged("Adres_MAC");
+					this.OnAdres_MACChanged();
 				}
 			}
 		}

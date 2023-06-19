@@ -19,7 +19,7 @@ namespace WakeMeOnLan
 
         string nazwa;
         string adresIP;
-        int stan=0;
+        int stan = 0;
         public Form1()
         {
             InitializeComponent();
@@ -58,24 +58,24 @@ namespace WakeMeOnLan
         {
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nic = NetworkInterface.GetAllNetworkInterfaces();
-            Console.WriteLine("Ilosc: {0} ", nic.Length);
-            Console.WriteLine();
+            //Console.WriteLine("Ilosc: {0} ", nic.Length);
+            //Console.WriteLine();
             foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
                 {
-                    Console.WriteLine(ni.Name);
-                    Console.WriteLine(ni.GetPhysicalAddress().ToString());
+                    //Console.WriteLine(ni.Name);
+                    //Console.WriteLine(ni.GetPhysicalAddress().ToString());
                     foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
                     {
                         if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                         {
-                            Console.WriteLine(ip.Address.ToString());
-                            Console.WriteLine(ip.IPv4Mask.ToString());
+                            //Console.WriteLine(ip.Address.ToString());
+                            //Console.WriteLine(ip.IPv4Mask.ToString());
                         }
                     }
                 }
-               Console.WriteLine();
+               //Console.WriteLine();
             }
 
             /*Console.WriteLine("-----");
@@ -102,7 +102,7 @@ namespace WakeMeOnLan
                 }
             }*/
 
-            Console.WriteLine("-----");
+            //Console.WriteLine("-----");
             string MACadres;
             int[] tablica = new int[] {80,443};
             for (int i = 0; i < 20; i++)
@@ -114,18 +114,27 @@ namespace WakeMeOnLan
                     if (IsHostUp(numer, value) == true)
                     {
                         MACadres = GetMacAddress(numer);
-                        Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + numer + " \n Adres MAC : " + MACadres);
-                        Console.WriteLine();
+                        //Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + numer + " \n Adres MAC : " + MACadres);
+                        //Console.WriteLine();
                         adresIP = numer;
                         stan = 1;
+                        var dc = DataContextSingleton.GetInstance();
+                        var s = new Siec
+                        {
+                            Adres_IP = adresIP,
+                            Adres_MAC = MACadres,
+                            Czy_uspiony = stan
+                        };
+                        dc.Sieci.InsertOnSubmit(s);
+                        dc.SubmitChanges();
                         UserControlDane userControl = new UserControlDane(stan, adresIP, MACadres);
                         flowLayoutPanel.Controls.Add(userControl);
                         break;
                     }
                     else
                     {
-                        Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + numer);
-                        Console.WriteLine();
+                        //Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + numer);
+                        //Console.WriteLine();
                     }
                 }
             }
