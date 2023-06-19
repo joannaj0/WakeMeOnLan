@@ -80,7 +80,6 @@
             this.Controls.Add(this.buttonStan);
             this.Name = "UserControlDane";
             this.Size = new System.Drawing.Size(567, 32);
-            this.Load += new System.EventHandler(this.UserControlDane_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

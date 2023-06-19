@@ -76,14 +76,14 @@
             // 
             this.flowLayoutPanel.Location = new System.Drawing.Point(16, 62);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(572, 150);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(572, 435);
             this.flowLayoutPanel.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(602, 228);
+            this.ClientSize = new System.Drawing.Size(602, 509);
             this.Controls.Add(this.flowLayoutPanel);
             this.Controls.Add(this.labelAdresMAC);
             this.Controls.Add(this.labelAdresIP);

@@ -38,15 +38,17 @@ namespace WakeMeOnLan
             labelAdresMACU.Text = MACadres;
         }
 
-        private void UserControlDane_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonBudzenie_Click(object sender, EventArgs e)
         {
             buttonStan.BackColor = Color.Green;
             buttonBudzenie.Enabled = false;
+            var dc = DataContextSingleton.GetInstance();
+            var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == labelAdresIPU.Text && x.Adres_MAC == labelAdresMACU.Text);
+            if(s != null)
+            {
+                s.Czy_uspiony = 1;
+                dc.SubmitChanges();
+            }
         }
     }
 }
