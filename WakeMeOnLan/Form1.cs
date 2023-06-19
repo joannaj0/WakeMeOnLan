@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
-
+using System.Runtime.InteropServices;
 
 namespace WakeMeOnLan
 {
@@ -36,6 +36,22 @@ namespace WakeMeOnLan
             {
                 return true;
             }
+        }
+
+        [DllImport("iphlpapi.dll", ExactSpelling = true)]
+        public static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
+
+        public static string GetMacAddress(string ipAddress)
+        {
+            IPAddress IP = IPAddress.Parse(ipAddress);
+            byte[] macAddr = new byte[6];
+            uint macAddrLen = (uint)macAddr.Length;
+            if (SendARP(BitConverter.ToInt32(IP.GetAddressBytes(), 0), 0, macAddr, ref macAddrLen) != 0)
+                throw new InvalidOperationException("SendARP failed.");
+            string[] str = new string[(int)macAddrLen];
+            for (int i = 0; i < macAddrLen; i++)
+                str[i] = macAddr[i].ToString("x2");
+            return string.Join("-", str);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -97,7 +113,7 @@ namespace WakeMeOnLan
                 {
                     if (IsHostUp(numer, value) == true)
                     {
-                        MACadres = "xxx";
+                        MACadres = GetMacAddress(numer);
                         Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + numer + " \n Adres MAC : " + MACadres);
                         Console.WriteLine();
                         adresIP = numer;
