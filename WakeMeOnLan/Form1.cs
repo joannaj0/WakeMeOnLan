@@ -119,14 +119,18 @@ namespace WakeMeOnLan
                         adresIP = numer;
                         stan = 1;
                         var dc = DataContextSingleton.GetInstance();
-                        var s = new Siec
+                        bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == MACadres);
+                        if (!exists)
                         {
-                            Adres_IP = adresIP,
-                            Adres_MAC = MACadres,
-                            Czy_uspiony = stan
-                        };
-                        dc.Sieci.InsertOnSubmit(s);
-                        dc.SubmitChanges();
+                            var s = new Siec
+                            {
+                                Adres_IP = adresIP,
+                                Adres_MAC = MACadres,
+                                Czy_uspiony = stan
+                            };
+                            dc.Sieci.InsertOnSubmit(s);
+                            dc.SubmitChanges();
+                        }
                         UserControlDane userControl = new UserControlDane(stan, adresIP, MACadres);
                         flowLayoutPanel.Controls.Add(userControl);
                         break;
