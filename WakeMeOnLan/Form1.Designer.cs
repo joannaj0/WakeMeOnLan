@@ -43,6 +43,7 @@
             this.buttonSkanuj.TabIndex = 0;
             this.buttonSkanuj.Text = "Skanuj";
             this.buttonSkanuj.UseVisualStyleBackColor = true;
+            this.buttonSkanuj.Click += new System.EventHandler(this.buttonSkanuj_Click);
             // 
             // labelStan
             // 

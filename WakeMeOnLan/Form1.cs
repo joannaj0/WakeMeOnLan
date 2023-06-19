@@ -56,6 +56,14 @@ namespace WakeMeOnLan
 
         private void Form1_Load(object sender, EventArgs e)
         {
+        
+        }
+
+        private void buttonSkanuj_Click(object sender, EventArgs e)
+        {
+            flowLayoutPanel.Controls.Clear();
+            var dc = DataContextSingleton.GetInstance();
+
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nic = NetworkInterface.GetAllNetworkInterfaces();
             //Console.WriteLine("Ilosc: {0} ", nic.Length);
@@ -75,7 +83,7 @@ namespace WakeMeOnLan
                         }
                     }
                 }
-               //Console.WriteLine();
+                //Console.WriteLine();
             }
 
             /*Console.WriteLine("-----");
@@ -103,8 +111,8 @@ namespace WakeMeOnLan
             }*/
 
             //Console.WriteLine("-----");
-            string MACadres;
-            int[] tablica = new int[] {80,443};
+            string adresMAC;
+            int[] tablica = new int[] { 80, 443 };
             for (int i = 0; i < 20; i++)
             {
                 string numer = "192.168.5.";
@@ -113,26 +121,23 @@ namespace WakeMeOnLan
                 {
                     if (IsHostUp(numer, value) == true)
                     {
-                        MACadres = GetMacAddress(numer);
+                        adresMAC = GetMacAddress(numer);
                         //Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + numer + " \n Adres MAC : " + MACadres);
                         //Console.WriteLine();
                         adresIP = numer;
                         stan = 1;
-                        var dc = DataContextSingleton.GetInstance();
-                        bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == MACadres);
+                        bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == adresMAC);
                         if (!exists)
                         {
                             var s = new Siec
                             {
                                 Adres_IP = adresIP,
-                                Adres_MAC = MACadres,
+                                Adres_MAC = adresMAC,
                                 Czy_uspiony = stan
                             };
                             dc.Sieci.InsertOnSubmit(s);
                             dc.SubmitChanges();
                         }
-                        UserControlDane userControl = new UserControlDane(stan, adresIP, MACadres);
-                        flowLayoutPanel.Controls.Add(userControl);
                         break;
                     }
                     else
@@ -141,6 +146,18 @@ namespace WakeMeOnLan
                         //Console.WriteLine();
                     }
                 }
+            }
+            
+            var sieci = dc.Sieci.ToList();
+
+            foreach (var siec in sieci)
+            {
+                string adres_IP = siec.Adres_IP;
+                string adres_MAC = siec.Adres_MAC;
+                int stan = siec.Czy_uspiony;
+
+                UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
+                flowLayoutPanel.Controls.Add(userControl);
             }
         }
     }
