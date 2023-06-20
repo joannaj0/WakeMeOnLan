@@ -56,13 +56,21 @@ namespace WakeMeOnLan
 
         private void Form1_Load(object sender, EventArgs e)
         {
-        
+            
         }
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
         {
             flowLayoutPanel.Controls.Clear();
             var dc = DataContextSingleton.GetInstance();
+
+            var sieci1 = dc.Sieci.ToList();
+
+            foreach (var siec1 in sieci1)
+            {
+                siec1.Czy_byl = 0;
+            }
+            dc.SubmitChanges();
 
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nic = NetworkInterface.GetAllNetworkInterfaces();
@@ -133,28 +141,54 @@ namespace WakeMeOnLan
                             {
                                 Adres_IP = adresIP,
                                 Adres_MAC = adresMAC,
-                                Czy_uspiony = stan
+                                Czy_obudzony = stan,
+                                Czy_byl = 1
                             };
                             dc.Sieci.InsertOnSubmit(s);
                             dc.SubmitChanges();
                         }
+                        else
+                        {
+                             var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
+                             if (s != null)
+                             {
+                                s.Czy_byl = 1;
+                                dc.SubmitChanges();
+                             }      
+                        }
                         break;
                     }
                     else
-                    {
+                    { 
                         //Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + numer);
                         //Console.WriteLine();
                     }
                 }
             }
-            
-            var sieci = dc.Sieci.ToList();
 
-            foreach (var siec in sieci)
+
+            var sieci2 = dc.Sieci.ToList();
+            foreach (var siec2 in sieci2)
             {
-                string adres_IP = siec.Adres_IP;
-                string adres_MAC = siec.Adres_MAC;
-                int stan = siec.Czy_uspiony;
+                if (siec2.Czy_byl == 1)
+                {
+                    siec2.Czy_obudzony = 1; 
+                }
+                else
+                {
+                    siec2.Czy_obudzony = 0;
+                }
+                    
+            }
+            dc.SubmitChanges();
+
+            var sieci3 = dc.Sieci.ToList();
+            foreach (var siec3 in sieci3)
+            {
+                string adres_IP = siec3.Adres_IP;
+                string adres_MAC = siec3.Adres_MAC;
+                int stan = siec3.Czy_obudzony;
+                int czy_byl = siec3.Czy_byl;
 
                 UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
                 flowLayoutPanel.Controls.Add(userControl);

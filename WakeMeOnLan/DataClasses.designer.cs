@@ -86,7 +86,9 @@ namespace WakeMeOnLan
 		
 		private string _Adres_MAC;
 		
-		private int _Czy_uspiony;
+		private int _Czy_obudzony;
+		
+		private int _Czy_byl;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -98,8 +100,10 @@ namespace WakeMeOnLan
     partial void OnAdres_IPChanged();
     partial void OnAdres_MACChanging(string value);
     partial void OnAdres_MACChanged();
-    partial void OnCzy_uspionyChanging(int value);
-    partial void OnCzy_uspionyChanged();
+    partial void OnCzy_obudzonyChanging(int value);
+    partial void OnCzy_obudzonyChanged();
+    partial void OnCzy_bylChanging(int value);
+    partial void OnCzy_bylChanged();
     #endregion
 		
 		public Siec()
@@ -167,22 +171,42 @@ namespace WakeMeOnLan
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Czy_uspiony", DbType="Int NOT NULL")]
-		public int Czy_uspiony
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Czy_obudzony", DbType="Int NOT NULL")]
+		public int Czy_obudzony
 		{
 			get
 			{
-				return this._Czy_uspiony;
+				return this._Czy_obudzony;
 			}
 			set
 			{
-				if ((this._Czy_uspiony != value))
+				if ((this._Czy_obudzony != value))
 				{
-					this.OnCzy_uspionyChanging(value);
+					this.OnCzy_obudzonyChanging(value);
 					this.SendPropertyChanging();
-					this._Czy_uspiony = value;
-					this.SendPropertyChanged("Czy_uspiony");
-					this.OnCzy_uspionyChanged();
+					this._Czy_obudzony = value;
+					this.SendPropertyChanged("Czy_obudzony");
+					this.OnCzy_obudzonyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Czy_byl", DbType="Int NOT NULL")]
+		public int Czy_byl
+		{
+			get
+			{
+				return this._Czy_byl;
+			}
+			set
+			{
+				if ((this._Czy_byl != value))
+				{
+					this.OnCzy_bylChanging(value);
+					this.SendPropertyChanging();
+					this._Czy_byl = value;
+					this.SendPropertyChanged("Czy_byl");
+					this.OnCzy_bylChanged();
 				}
 			}
 		}

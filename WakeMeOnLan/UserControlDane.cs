@@ -46,7 +46,7 @@ namespace WakeMeOnLan
             var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == labelAdresIPU.Text && x.Adres_MAC == labelAdresMACU.Text);
             if(s != null)
             {
-                s.Czy_uspiony = 1;
+                s.Czy_obudzony = 1;
                 dc.SubmitChanges();
             }
         }

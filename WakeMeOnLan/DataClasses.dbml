@@ -5,7 +5,8 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Adres_IP" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
       <Column Name="Adres_MAC" Type="System.String" DbType="NVarChar(17) NOT NULL" CanBeNull="false" />
-      <Column Name="Czy_uspiony" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Czy_obudzony" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Czy_byl" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
