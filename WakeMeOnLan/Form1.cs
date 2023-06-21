@@ -25,10 +25,42 @@ namespace WakeMeOnLan
             InitializeComponent();
         }
 
+        static int CompareAddresses(byte[] address1, byte[] address2)
+        {
+            for (int i = 0; i < address1.Length; i++)
+            {
+                if (address1[i] < address2[i])
+                {
+                    return -1;
+                }
+                else if (address1[i] > address2[i])
+                {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        static void IncrementAddress(byte[] address)
+        {
+            for (int i = address.Length - 1; i >= 0; i--)
+            {
+                if (address[i] < 254)
+                {
+                    address[i]++;
+                    break;
+                }
+                else
+                {
+                    address[i] = 0;
+                }
+            }
+        }
+
         public static bool IsHostUp(string hostNameOrAddress, int port)
         {
             var client = new TcpClient();
-            if (!client.ConnectAsync(hostNameOrAddress, port).Wait(1000))
+            if (!client.ConnectAsync(hostNameOrAddress, port).Wait(500))
             {
                 return false;
             }
@@ -54,9 +86,24 @@ namespace WakeMeOnLan
             return string.Join("-", str);
         }
 
+        public List<IPAddress> GetIPList(byte[] currentAddress, byte[] broadcastAddress)
+        {
+            List<IPAddress> IpAddressList = new List<IPAddress>();
+
+            while (CompareAddresses(currentAddress, broadcastAddress) <= 0)
+            {
+                IPAddress currentIpAddress = new IPAddress(currentAddress);
+                IpAddressList.Add(currentIpAddress);
+                IncrementAddress(currentAddress);
+            }
+
+            return IpAddressList;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            textBoxMaska.Enabled = false;
+            textBoxAdresIP.Enabled = false;
         }
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
@@ -86,55 +133,61 @@ namespace WakeMeOnLan
                     {
                         if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                         {
-                            //Console.WriteLine(ip.Address.ToString());
-                            //Console.WriteLine(ip.IPv4Mask.ToString());
+                            if(ni.Name == "Wi-Fi")
+                            { 
+                                textBoxMaska.Text = ip.IPv4Mask.ToString();
+                                textBoxAdresIP.Text = ip.Address.ToString();
+                            }
                         }
                     }
                 }
                 //Console.WriteLine();
             }
 
-            /*Console.WriteLine("-----");
-            for (int i = 0; i < 20; i++)
-            {
-                string numer="192.168.17.";
-                numer += i;
-                try
-                {
-                    Ping myPing = new Ping();
-                    PingReply reply = myPing.Send(numer, 1000);
-                    Console.WriteLine("Adres hosta: " + numer);
-                    if (reply != null)
-                    {
-                       Console.WriteLine("Status :  " + reply.Status + " \n Address : " + reply.Address);
-                       Console.WriteLine();
+            IPAddress IPadres = IPAddress.Parse(textBoxAdresIP.Text);
+            IPAddress Imaska = IPAddress.Parse(textBoxMaska.Text);
 
-                    }
-                }
-                catch
-                {
-                    Console.WriteLine("ERROR");
-                    Console.WriteLine();
-                }
+            byte[] IPadres_bitowy = IPadres.GetAddressBytes();
+            byte[] maska_bitowa = Imaska.GetAddressBytes();
+
+            byte[] networkAddress = new byte[IPadres_bitowy.Length];
+
+            for (int i = 0; i < networkAddress.Length; i++)
+            {
+                networkAddress[i] = (byte)(IPadres_bitowy[i] & maska_bitowa[i]);
+            }
+
+            byte[] broadcastAddress = new byte[IPadres_bitowy.Length];
+
+            for (int i = 0; i < broadcastAddress.Length; i++)
+            {
+                broadcastAddress[i] = (byte)(IPadres_bitowy[i] | (maska_bitowa[i] ^ 255));
+            }
+
+            byte[] currentAddress = networkAddress;
+
+            List<IPAddress> IpAddressList = GetIPList(currentAddress, broadcastAddress);
+
+            /*foreach (IPAddress IpAddress in IpAddressList)
+            {
+                Console.WriteLine(IpAddress);
             }*/
 
-            string adresIP_pocz = "192.168.17.";
-            string numer;
             //Console.WriteLine("-----");
             string adresMAC;
             int[] tablica = new int[] { 80, 443 };
-            for (int i = 0; i < 20; i++)
+            foreach (IPAddress IpAddress in IpAddressList)
             {
-                numer = adresIP_pocz;
-                numer += i;
                 foreach (int value in tablica)
                 {
-                    if (IsHostUp(numer, value) == true)
+                    //Console.WriteLine("Status: *** \n Port:" + value + " \n Adres IP: " + IpAddress.ToString());
+                    //Console.WriteLine();
+                    if (IsHostUp(IpAddress.ToString(), value) == true)
                     {
-                        adresMAC = GetMacAddress(numer);
-                        //Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + numer + " \n Adres MAC : " + MACadres);
-                        //Console.WriteLine();
-                        adresIP = numer;
+                        adresMAC = GetMacAddress(IpAddress.ToString());
+                        Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + IpAddress.ToString() + " \n Adres MAC : " + adresMAC);
+                        Console.WriteLine();
+                        adresIP = IpAddress.ToString();
                         stan = 1;
                         bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == adresMAC);
                         if (!exists)
@@ -151,58 +204,58 @@ namespace WakeMeOnLan
                         }
                         else
                         {
-                             var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
-                             if (s != null)
-                             {
+                            var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
+                            if (s != null)
+                            {
                                 s.Czy_byl = 1;
                                 dc.SubmitChanges();
-                             }      
+                            }
                         }
                         break;
                     }
                     else
-                    { 
-                        //Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + numer);
-                        //Console.WriteLine();
+                    {
+                        Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + IpAddress.ToString());
+                        Console.WriteLine();
                     }
                 }
             }
 
+             var sieci2 = dc.Sieci.ToList();
+             foreach (var siec2 in sieci2)
+             {
+                 string przed_obcieciem = siec2.Adres_IP;
+                 char[] ktore_sa = {'0',  '1', '2', '3', '4', '5', '6', '7' , '8', '9' };
+                 string po_obcieciu = przed_obcieciem.TrimEnd(ktore_sa);
+                 string adresIP_pocz = textBoxAdresIP.Text.TrimEnd(ktore_sa);
+                 //Console.WriteLine(po_obcieciu);
+                 if (siec2.Czy_byl == 1)
+                 {
+                     siec2.Czy_obudzony = 1; 
+                 }
+                 else if(po_obcieciu != adresIP_pocz)
+                 {
+                     siec2.Czy_obudzony = 2;
+                 }
+                 else
+                 {
+                     siec2.Czy_obudzony = 0;
+                 }
 
-            var sieci2 = dc.Sieci.ToList();
-            foreach (var siec2 in sieci2)
-            {
-                string przed_obcieciem = siec2.Adres_IP;
-                char[] ktore_sa = {'0',  '1', '2', '3', '4', '5', '6', '7' , '8', '9' };
-                string po_obcieciu = przed_obcieciem.TrimEnd(ktore_sa);
-                //Console.WriteLine(po_obcieciu);
-                if (siec2.Czy_byl == 1)
-                {
-                    siec2.Czy_obudzony = 1; 
-                }
-                else if(po_obcieciu != adresIP_pocz)
-                {
-                    siec2.Czy_obudzony = 2;
-                }
-                else
-                {
-                    siec2.Czy_obudzony = 0;
-                }
-                    
-            }
-            dc.SubmitChanges();
+             }
+             dc.SubmitChanges();
 
-            var sieci3 = dc.Sieci.ToList();
-            foreach (var siec3 in sieci3)
-            {
-                string adres_IP = siec3.Adres_IP;
-                string adres_MAC = siec3.Adres_MAC;
-                int stan = siec3.Czy_obudzony;
-                int czy_byl = siec3.Czy_byl;
+             var sieci3 = dc.Sieci.ToList();
+             foreach (var siec3 in sieci3)
+             {
+                 string adres_IP = siec3.Adres_IP;
+                 string adres_MAC = siec3.Adres_MAC;
+                 int stan = siec3.Czy_obudzony;
+                 int czy_byl = siec3.Czy_byl;
 
-                UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
-                flowLayoutPanel.Controls.Add(userControl);
-            }
+                 UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
+                 flowLayoutPanel.Controls.Add(userControl);
+             }
         }
     }
  }

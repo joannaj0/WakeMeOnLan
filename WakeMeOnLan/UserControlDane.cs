@@ -37,7 +37,7 @@ namespace WakeMeOnLan
             else
             {
                 buttonStan.BackColor = Color.Yellow;
-                buttonBudzenie.Enabled = false;
+                buttonBudzenie.Enabled = true;
             }
             labelAdresIPU.Text = adresIP;
             labelAdresMACU.Text = MACadres;
