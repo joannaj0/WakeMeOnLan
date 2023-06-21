@@ -118,12 +118,14 @@ namespace WakeMeOnLan
                 }
             }*/
 
+            string adresIP_pocz = "192.168.17.";
+            string numer;
             //Console.WriteLine("-----");
             string adresMAC;
             int[] tablica = new int[] { 80, 443 };
             for (int i = 0; i < 20; i++)
             {
-                string numer = "192.168.5.";
+                numer = adresIP_pocz;
                 numer += i;
                 foreach (int value in tablica)
                 {
@@ -170,9 +172,17 @@ namespace WakeMeOnLan
             var sieci2 = dc.Sieci.ToList();
             foreach (var siec2 in sieci2)
             {
+                string przed_obcieciem = siec2.Adres_IP;
+                char[] ktore_sa = {'0',  '1', '2', '3', '4', '5', '6', '7' , '8', '9' };
+                string po_obcieciu = przed_obcieciem.TrimEnd(ktore_sa);
+                //Console.WriteLine(po_obcieciu);
                 if (siec2.Czy_byl == 1)
                 {
                     siec2.Czy_obudzony = 1; 
+                }
+                else if(po_obcieciu != adresIP_pocz)
+                {
+                    siec2.Czy_obudzony = 2;
                 }
                 else
                 {

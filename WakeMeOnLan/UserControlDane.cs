@@ -29,9 +29,14 @@ namespace WakeMeOnLan
                 buttonStan.BackColor = Color.Red;
                 buttonBudzenie.Enabled = true;
             }
-            else
+            else if(stan == 1)
             {
                 buttonStan.BackColor = Color.Green;
+                buttonBudzenie.Enabled = false;
+            }
+            else
+            {
+                buttonStan.BackColor = Color.Yellow;
                 buttonBudzenie.Enabled = false;
             }
             labelAdresIPU.Text = adresIP;
