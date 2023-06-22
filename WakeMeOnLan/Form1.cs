@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using NetTools;
 
 namespace WakeMeOnLan
 {
@@ -23,38 +24,6 @@ namespace WakeMeOnLan
         public Form1()
         {
             InitializeComponent();
-        }
-
-        static int CompareAddresses(byte[] address1, byte[] address2)
-        {
-            for (int i = 0; i < address1.Length; i++)
-            {
-                if (address1[i] < address2[i])
-                {
-                    return -1;
-                }
-                else if (address1[i] > address2[i])
-                {
-                    return 1;
-                }
-            }
-            return 0;
-        }
-
-        static void IncrementAddress(byte[] address)
-        {
-            for (int i = address.Length - 1; i >= 0; i--)
-            {
-                if (address[i] < 254)
-                {
-                    address[i]++;
-                    break;
-                }
-                else
-                {
-                    address[i] = 0;
-                }
-            }
         }
 
         public static bool IsHostUp(string hostNameOrAddress, int port)
@@ -86,17 +55,20 @@ namespace WakeMeOnLan
             return string.Join("-", str);
         }
 
-        public List<IPAddress> GetIPList(byte[] currentAddress, byte[] broadcastAddress)
+        public List<IPAddress> GetIPList(string calosc)
         {
             List<IPAddress> IpAddressList = new List<IPAddress>();
 
-            while (CompareAddresses(currentAddress, broadcastAddress) <= 0)
+            foreach (var ip in IPAddressRange.Parse(calosc))
             {
-                IPAddress currentIpAddress = new IPAddress(currentAddress);
-                IpAddressList.Add(currentIpAddress);
-                IncrementAddress(currentAddress);
+                string ipa;
+                ipa = ip.ToString();
+                if(ipa.Substring(ipa.Length - 3) == "255")
+                {
+                    continue;
+                }
+                IpAddressList.Add(ip);
             }
-
             return IpAddressList;
         }
 
@@ -144,34 +116,14 @@ namespace WakeMeOnLan
                 //Console.WriteLine();
             }
 
-            IPAddress IPadres = IPAddress.Parse(textBoxAdresIP.Text);
-            IPAddress Imaska = IPAddress.Parse(textBoxMaska.Text);
+            string calosc;
+            calosc = textBoxAdresIP.Text + "/" + textBoxMaska.Text;
+            List<IPAddress> IpAddressList = GetIPList(calosc);
 
-            byte[] IPadres_bitowy = IPadres.GetAddressBytes();
-            byte[] maska_bitowa = Imaska.GetAddressBytes();
-
-            byte[] networkAddress = new byte[IPadres_bitowy.Length];
-
-            for (int i = 0; i < networkAddress.Length; i++)
-            {
-                networkAddress[i] = (byte)(IPadres_bitowy[i] & maska_bitowa[i]);
-            }
-
-            byte[] broadcastAddress = new byte[IPadres_bitowy.Length];
-
-            for (int i = 0; i < broadcastAddress.Length; i++)
-            {
-                broadcastAddress[i] = (byte)(IPadres_bitowy[i] | (maska_bitowa[i] ^ 255));
-            }
-
-            byte[] currentAddress = networkAddress;
-
-            List<IPAddress> IpAddressList = GetIPList(currentAddress, broadcastAddress);
-
-            /*foreach (IPAddress IpAddress in IpAddressList)
+            foreach (IPAddress IpAddress in IpAddressList)
             {
                 Console.WriteLine(IpAddress);
-            }*/
+            }
 
             //Console.WriteLine("-----");
             string adresMAC;

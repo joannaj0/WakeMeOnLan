@@ -10,3 +10,6 @@ D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.GenerateResourc
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.CoreCompileInputs.cache
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.exe
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.pdb
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddressRange.dll
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddressRange.xml
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.CopyComplete
