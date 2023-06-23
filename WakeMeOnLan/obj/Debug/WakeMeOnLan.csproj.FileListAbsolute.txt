@@ -13,3 +13,6 @@ D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.pdb
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddressRange.dll
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddressRange.xml
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.CopyComplete
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddresses.dll
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddresses.pdb
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddresses.xml

@@ -14,6 +14,15 @@
             "related": ".xml"
           }
         }
+      },
+      "IPAddresses/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/IPAddresses.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IPAddresses.dll": {}
+        }
       }
     }
   },
@@ -44,11 +53,17 @@
         "lib/netstandard2.1/IPAddressRange.xml",
         "nupkg-icon.png"
       ]
+    },
+    "IPAddresses/1.0.0": {
+      "type": "project",
+      "path": "../IPAddresses/IPAddresses.csproj",
+      "msbuildProject": "../IPAddresses/IPAddresses.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "IPAddressRange >= 6.0.0"
+      "IPAddressRange >= 6.0.0",
+      "IPAddresses >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -83,7 +98,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj": {
+              "projectPath": "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

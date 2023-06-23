@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IPAddresses, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\IPAddresses\bin\Debug\IPAddresses.dll</HintPath>
+    </Reference>
     <Reference Include="IPAddressRange, Version=6.0.0.0, Culture=neutral, PublicKeyToken=578e3c3d17e7c751, processorArchitecture=MSIL">
       <HintPath>..\packages\IPAddressRange.6.0.0\lib\net462\IPAddressRange.dll</HintPath>
     </Reference>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IPAddresses</name>
+    </assembly>
+    <members>
+        <member name="M:IPAddresses.IpAdressesClass.GetIPListForSubnet(System.String,System.String)">
+            <summary>
+            Funkcja generuje listę wszystkich adresów IP dla podsieci - przekazanego przez networkAddress adresu IP o przekazanej przez maskAddress masce (wraz adresem sieci i broadcastem, czyli pierwszym i ostatnim wygenerowanym w foreach)
+            </summary>
+        </member>
+        <member name="M:IPAddresses.IpAdressesClass.GetUsableIPForSubnet(System.String,System.String)">
+            <summary>
+            Funkcja usuwa pierwszy i ostatni adres (adres sieci i broadcast) z wygenerowanej przez funkcję GetIPListForSubnet listy.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -119,7 +119,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(602, 509);
+            this.ClientSize = new System.Drawing.Size(608, 509);
             this.Controls.Add(this.textBoxMaska);
             this.Controls.Add(this.labelNazwaMaska);
             this.Controls.Add(this.labelNazwaAdresIP);

@@ -1,0 +1,52 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "ConsoleWakeMeOnLan/1.0.0": {
+        "dependencies": {
+          "IPAddressRange": "6.0.0",
+          "IPAddresses": "1.0.0"
+        },
+        "runtime": {
+          "ConsoleWakeMeOnLan.dll": {}
+        }
+      },
+      "IPAddressRange/6.0.0": {
+        "runtime": {
+          "lib/net6.0/IPAddressRange.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
+          }
+        }
+      },
+      "IPAddresses/1.0.0": {
+        "runtime": {
+          "IPAddresses.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ConsoleWakeMeOnLan/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IPAddressRange/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3vLppw2bi+LjM/M5TRQBrQ2kRYFge3+aphf5FiKefEImBG/sUM5sYV2TVYbWnZTHTnW24Gc5CucsohGu/GN9gQ==",
+      "path": "ipaddressrange/6.0.0",
+      "hashPath": "ipaddressrange.6.0.0.nupkg.sha512"
+    },
+    "IPAddresses/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -32,7 +32,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj": {
+                "projectPath": "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -68,6 +72,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj",
+        "projectName": "IPAddresses",
+        "projectPath": "D:\\Praktyki\\WakeMeOnLan\\IPAddresses\\IPAddresses.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
       }
     }
   }

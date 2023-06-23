@@ -1,0 +1,10 @@
+D:\Praktyki\WakeMeOnLan\IPAddresses\bin\Debug\IPAddresses.xml
+D:\Praktyki\WakeMeOnLan\IPAddresses\bin\Debug\IPAddresses.dll
+D:\Praktyki\WakeMeOnLan\IPAddresses\bin\Debug\IPAddresses.pdb
+D:\Praktyki\WakeMeOnLan\IPAddresses\bin\Debug\IPAddressRange.dll
+D:\Praktyki\WakeMeOnLan\IPAddresses\bin\Debug\IPAddressRange.xml
+D:\Praktyki\WakeMeOnLan\IPAddresses\obj\Debug\IPAddresses.csproj.AssemblyReference.cache
+D:\Praktyki\WakeMeOnLan\IPAddresses\obj\Debug\IPAddresses.csproj.CoreCompileInputs.cache
+D:\Praktyki\WakeMeOnLan\IPAddresses\obj\Debug\IPAddresses.csproj.CopyComplete
+D:\Praktyki\WakeMeOnLan\IPAddresses\obj\Debug\IPAddresses.dll
+D:\Praktyki\WakeMeOnLan\IPAddresses\obj\Debug\IPAddresses.pdb

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WakeMeOnLan", "WakeMeOnLan\WakeMeOnLan.csproj", "{1387549B-E1BD-4899-85A0-66C12EFD23F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWakeMeOnLan", "ConsoleApp1\ConsoleWakeMeOnLan.csproj", "{49EBF7FB-FFEB-418A-8090-9C6207EB6C68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleWakeMeOnLan", "ConsoleApp1\ConsoleWakeMeOnLan.csproj", "{49EBF7FB-FFEB-418A-8090-9C6207EB6C68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPAddresses", "IPAddresses\IPAddresses.csproj", "{C1D6B505-D91B-4379-B06B-BF461119EDC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{49EBF7FB-FFEB-418A-8090-9C6207EB6C68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49EBF7FB-FFEB-418A-8090-9C6207EB6C68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49EBF7FB-FFEB-418A-8090-9C6207EB6C68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D6B505-D91B-4379-B06B-BF461119EDC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D6B505-D91B-4379-B06B-BF461119EDC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D6B505-D91B-4379-B06B-BF461119EDC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D6B505-D91B-4379-B06B-BF461119EDC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

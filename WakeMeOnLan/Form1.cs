@@ -11,13 +11,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using NetTools;
+using IPAddresses;
 
 namespace WakeMeOnLan
 {
     public partial class Form1 : Form
     {
-        string nazwa;
         string adresIP;
         int stan = 0;
         public Form1()
@@ -54,31 +53,10 @@ namespace WakeMeOnLan
             return string.Join("-", str);
         }
 
-        public List<IPAddress> GetIPListForSubnet(string networkAddress, string maskAddress)
-        {
-            List<IPAddress> IpAddressList = new List<IPAddress>();
-
-            foreach (var ip in IPAddressRange.Parse(networkAddress + "/" + maskAddress))
-            {
-                IpAddressList.Add(ip);
-            }
-            return IpAddressList;
-        }
-
-        public List<IPAddress> GetUsableIPForSubnet(string networkAddress, string maskAddress)
-        {
-            List<IPAddress> IpAddressList = GetIPListForSubnet(networkAddress, maskAddress);
-
-            IpAddressList.RemoveAt(0);
-            IpAddressList.RemoveAt(IpAddressList.Count - 1);
-
-            return IpAddressList;
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBoxMaska.Enabled = false;
-            textBoxAdresIP.Enabled = false;
+            textBoxMaska.Enabled = true;
+            textBoxAdresIP.Enabled = true;
         }
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
@@ -119,12 +97,12 @@ namespace WakeMeOnLan
                 //Console.WriteLine();
             }
 
-            List<IPAddress> IpAddressList = GetUsableIPForSubnet(textBoxAdresIP.Text,textBoxMaska.Text);
+            List<IPAddress> IpAddressList = IpAdressesClass.GetUsableIPForSubnet(textBoxAdresIP.Text, textBoxMaska.Text);
 
-            /*foreach (IPAddress IpAddress in IpAddressList)
+            foreach (IPAddress IpAddress in IpAddressList)
             {
-               Console.WriteLine(IpAddress);
-            }*/
+                Console.WriteLine(IpAddress);
+            }
 
             //Console.WriteLine("-----");
             string adresMAC;
