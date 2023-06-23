@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "soXMLCE6qN+/2ZLiGiYksRgUqZHycSfcKIPQUJmu1ZcpK/IfLy6KAr+qyqiaCMxCbPEDxwEewxwGaooXtsqEqA==",
+  "success": true,
+  "projectFilePath": "D:\\Praktyki\\WakeMeOnLan\\ConsoleApp1\\ConsoleWakeMeOnLan.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\asiak\\.nuget\\packages\\ipaddressrange\\6.0.0\\ipaddressrange.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
