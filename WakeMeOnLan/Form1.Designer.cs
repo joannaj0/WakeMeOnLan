@@ -37,6 +37,7 @@
             this.labelNazwaAdresIP = new System.Windows.Forms.Label();
             this.labelNazwaMaska = new System.Windows.Forms.Label();
             this.textBoxMaska = new System.Windows.Forms.TextBox();
+            this.labelInfo = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonSkanuj
@@ -52,7 +53,7 @@
             // labelStan
             // 
             this.labelStan.AutoSize = true;
-            this.labelStan.Location = new System.Drawing.Point(21, 59);
+            this.labelStan.Location = new System.Drawing.Point(19, 79);
             this.labelStan.Name = "labelStan";
             this.labelStan.Size = new System.Drawing.Size(34, 16);
             this.labelStan.TabIndex = 1;
@@ -61,7 +62,7 @@
             // labelAdresIP
             // 
             this.labelAdresIP.AutoSize = true;
-            this.labelAdresIP.Location = new System.Drawing.Point(70, 59);
+            this.labelAdresIP.Location = new System.Drawing.Point(68, 79);
             this.labelAdresIP.Name = "labelAdresIP";
             this.labelAdresIP.Size = new System.Drawing.Size(58, 16);
             this.labelAdresIP.TabIndex = 2;
@@ -70,7 +71,7 @@
             // labelAdresMAC
             // 
             this.labelAdresMAC.AutoSize = true;
-            this.labelAdresMAC.Location = new System.Drawing.Point(247, 59);
+            this.labelAdresMAC.Location = new System.Drawing.Point(245, 79);
             this.labelAdresMAC.Name = "labelAdresMAC";
             this.labelAdresMAC.Size = new System.Drawing.Size(75, 16);
             this.labelAdresMAC.TabIndex = 3;
@@ -78,9 +79,9 @@
             // 
             // flowLayoutPanel
             // 
-            this.flowLayoutPanel.Location = new System.Drawing.Point(16, 78);
+            this.flowLayoutPanel.Location = new System.Drawing.Point(16, 107);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(572, 419);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(572, 390);
             this.flowLayoutPanel.TabIndex = 4;
             // 
             // textBoxAdresIP
@@ -115,11 +116,21 @@
             this.textBoxMaska.Size = new System.Drawing.Size(133, 22);
             this.textBoxMaska.TabIndex = 8;
             // 
+            // labelInfo
+            // 
+            this.labelInfo.AutoSize = true;
+            this.labelInfo.Location = new System.Drawing.Point(303, 47);
+            this.labelInfo.Name = "labelInfo";
+            this.labelInfo.Size = new System.Drawing.Size(17, 16);
+            this.labelInfo.TabIndex = 9;
+            this.labelInfo.Text = "\"\"";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 509);
+            this.Controls.Add(this.labelInfo);
             this.Controls.Add(this.textBoxMaska);
             this.Controls.Add(this.labelNazwaMaska);
             this.Controls.Add(this.labelNazwaAdresIP);
@@ -148,6 +159,7 @@
         private System.Windows.Forms.Label labelNazwaAdresIP;
         private System.Windows.Forms.Label labelNazwaMaska;
         private System.Windows.Forms.TextBox textBoxMaska;
+        private System.Windows.Forms.Label labelInfo;
     }
 }
 

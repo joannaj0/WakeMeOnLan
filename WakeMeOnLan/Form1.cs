@@ -12,11 +12,14 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using IPAddresses;
+using System.Text.RegularExpressions;
 
 namespace WakeMeOnLan
 {
     public partial class Form1 : Form
     {
+        string adresIP_textBox;
+        string maska_textBox;
         string adresIP;
         int stan = 0;
         public Form1()
@@ -53,10 +56,15 @@ namespace WakeMeOnLan
             return string.Join("-", str);
         }
 
+        static bool SprawdzCzyOk(string nazwa)
+        {
+            string wzorzec = @"^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$";
+            return Regex.IsMatch(nazwa, wzorzec);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            textBoxMaska.Enabled = true;
-            textBoxAdresIP.Enabled = true;
+            labelInfo.Text = "";
         }
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
@@ -86,10 +94,10 @@ namespace WakeMeOnLan
                     {
                         if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                         {
-                            if(ni.Name == "Wi-Fi")
-                            { 
-                                textBoxMaska.Text = ip.IPv4Mask.ToString();
-                                textBoxAdresIP.Text = ip.Address.ToString();
+                            if(ni.Name == "Wi-Fi" && (textBoxAdresIP.Text=="" || textBoxMaska.Text==""))
+                            {
+                                    textBoxMaska.Text = ip.IPv4Mask.ToString();
+                                    textBoxAdresIP.Text = ip.Address.ToString();
                             }
                         }
                     }
@@ -97,96 +105,105 @@ namespace WakeMeOnLan
                 //Console.WriteLine();
             }
 
-            List<IPAddress> IpAddressList = IpAdressesClass.GetUsableIPForSubnet(textBoxAdresIP.Text, textBoxMaska.Text);
-
-            foreach (IPAddress IpAddress in IpAddressList)
+            if (SprawdzCzyOk(textBoxMaska.Text) == true && SprawdzCzyOk(textBoxAdresIP.Text) == true)
             {
-                Console.WriteLine(IpAddress);
-            }
+                labelInfo.Text = "";
+                List<IPAddress> IpAddressList = IpAdressesClass.GetUsableIPForSubnet(textBoxAdresIP.Text, textBoxMaska.Text);
 
-            //Console.WriteLine("-----");
-            string adresMAC;
-            int[] tablica = new int[] { 80, 443 };
-            foreach (IPAddress IpAddress in IpAddressList)
-            {
-                foreach (int value in tablica)
+                //foreach (IPAddress IpAddress in IpAddressList)
+                //{
+                //    Console.WriteLine(IpAddress);
+                //}
+
+                //Console.WriteLine("-----");
+                string adresMAC;
+                int[] tablica = new int[] { 80, 443 };
+                foreach (IPAddress IpAddress in IpAddressList)
                 {
-                    //Console.WriteLine("Status: *** \n Port:" + value + " \n Adres IP: " + IpAddress.ToString());
-                    //Console.WriteLine();
-                    if (IsHostUp(IpAddress.ToString(), value) == true)
+                    foreach (int value in tablica)
                     {
-                        adresMAC = GetMacAddress(IpAddress.ToString());
-                        Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + IpAddress.ToString() + " \n Adres MAC : " + adresMAC);
-                        Console.WriteLine();
-                        adresIP = IpAddress.ToString();
-                        stan = 1;
-                        bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == adresMAC);
-                        if (!exists)
+                        //Console.WriteLine("Status: *** \n Port:" + value + " \n Adres IP: " + IpAddress.ToString());
+                        //Console.WriteLine();
+                        if (IsHostUp(IpAddress.ToString(), value) == true)
                         {
-                            var s = new Siec
+                            adresMAC = GetMacAddress(IpAddress.ToString());
+                            Console.WriteLine("Status: Success \n Port:" + value + " \n Adres IP: " + IpAddress.ToString() + " \n Adres MAC : " + adresMAC);
+                            Console.WriteLine();
+                            adresIP = IpAddress.ToString();
+                            stan = 1;
+                            bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == adresMAC);
+                            if (!exists)
                             {
-                                Adres_IP = adresIP,
-                                Adres_MAC = adresMAC,
-                                Czy_obudzony = stan,
-                                Czy_byl = 1
-                            };
-                            dc.Sieci.InsertOnSubmit(s);
-                            dc.SubmitChanges();
+                                var s = new Siec
+                                {
+                                    Adres_IP = adresIP,
+                                    Adres_MAC = adresMAC,
+                                    Czy_obudzony = stan,
+                                    Czy_byl = 1
+                                };
+                                dc.Sieci.InsertOnSubmit(s);
+                                dc.SubmitChanges();
+                            }
+                            else
+                            {
+                                var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
+                                if (s != null)
+                                {
+                                    s.Czy_byl = 1;
+                                    dc.SubmitChanges();
+                                }
+                            }
+                            break;
                         }
                         else
                         {
-                            var s = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
-                            if (s != null)
-                            {
-                                s.Czy_byl = 1;
-                                dc.SubmitChanges();
-                            }
+                            Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + IpAddress.ToString());
+                            Console.WriteLine();
                         }
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Status: - \n Port:" + value + " \n Adres IP: " + IpAddress.ToString());
-                        Console.WriteLine();
                     }
                 }
+
+                 var sieci2 = dc.Sieci.ToList();
+                 foreach (var siec2 in sieci2)
+                 {
+                     string przed_obcieciem = siec2.Adres_IP;
+                     char[] ktore_sa = {'0',  '1', '2', '3', '4', '5', '6', '7' , '8', '9' };
+                     string po_obcieciu = przed_obcieciem.TrimEnd(ktore_sa);
+                     string adresIP_pocz = textBoxAdresIP.Text.TrimEnd(ktore_sa);
+                     //Console.WriteLine(po_obcieciu);
+                     if (siec2.Czy_byl == 1)
+                     {
+                         siec2.Czy_obudzony = 1; 
+                     }
+                     else if(po_obcieciu != adresIP_pocz)
+                     {
+                         siec2.Czy_obudzony = 2;
+                     }
+                     else
+                     {
+                         siec2.Czy_obudzony = 0;
+                     }
+
+                 }
+                 dc.SubmitChanges();
+
+                 var sieci3 = dc.Sieci.ToList();
+                 foreach (var siec3 in sieci3)
+                 {
+                     string adres_IP = siec3.Adres_IP;
+                     string adres_MAC = siec3.Adres_MAC;
+                     int stan = siec3.Czy_obudzony;
+                     int czy_byl = siec3.Czy_byl;
+
+                     UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
+                     flowLayoutPanel.Controls.Add(userControl);
+                 }
             }
-
-             var sieci2 = dc.Sieci.ToList();
-             foreach (var siec2 in sieci2)
-             {
-                 string przed_obcieciem = siec2.Adres_IP;
-                 char[] ktore_sa = {'0',  '1', '2', '3', '4', '5', '6', '7' , '8', '9' };
-                 string po_obcieciu = przed_obcieciem.TrimEnd(ktore_sa);
-                 string adresIP_pocz = textBoxAdresIP.Text.TrimEnd(ktore_sa);
-                 //Console.WriteLine(po_obcieciu);
-                 if (siec2.Czy_byl == 1)
-                 {
-                     siec2.Czy_obudzony = 1; 
-                 }
-                 else if(po_obcieciu != adresIP_pocz)
-                 {
-                     siec2.Czy_obudzony = 2;
-                 }
-                 else
-                 {
-                     siec2.Czy_obudzony = 0;
-                 }
-
-             }
-             dc.SubmitChanges();
-
-             var sieci3 = dc.Sieci.ToList();
-             foreach (var siec3 in sieci3)
-             {
-                 string adres_IP = siec3.Adres_IP;
-                 string adres_MAC = siec3.Adres_MAC;
-                 int stan = siec3.Czy_obudzony;
-                 int czy_byl = siec3.Czy_byl;
-
-                 UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
-                 flowLayoutPanel.Controls.Add(userControl);
-             }
+            else
+            {
+                labelInfo.ForeColor = Color.Red;
+                labelInfo.Text = "Błędne dane adresu IP lub/i maski!";
+            }
         }
     }
  }
