@@ -51,7 +51,7 @@
             this.buttonSkanuj.Name = "buttonSkanuj";
             this.buttonSkanuj.Size = new System.Drawing.Size(128, 31);
             this.buttonSkanuj.TabIndex = 0;
-            this.buttonSkanuj.Text = "Skanuj podsieć";
+            this.buttonSkanuj.Text = "SkanujPodsiec podsieć";
             this.buttonSkanuj.UseVisualStyleBackColor = true;
             this.buttonSkanuj.Click += new System.EventHandler(this.buttonSkanuj_Click);
             // 

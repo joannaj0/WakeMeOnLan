@@ -78,7 +78,7 @@ namespace WakeMeOnLan
             labelInfoP.Text = "";
         }
 
-        public void Skanuj()
+        public void SkanujPodsiec()
         {
             flowLayoutPanel.Invoke(new Action(() => { flowLayoutPanel.Controls.Clear();}));
             var dc = DataContextSingleton.GetInstance();
@@ -238,7 +238,7 @@ namespace WakeMeOnLan
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
         {
-            watekSkanuj = new Thread(Skanuj);
+            watekSkanuj = new Thread(SkanujPodsiec);
             watekSkanuj.Start();
         }
 
