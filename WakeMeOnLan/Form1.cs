@@ -14,14 +14,18 @@ using System.Runtime.InteropServices;
 using IPAddresses;
 using System.Text.RegularExpressions;
 using System.Diagnostics.Eventing.Reader;
+using System.Threading;
 
 namespace WakeMeOnLan
 {
     public partial class Form1 : Form
     {
+        private Thread watekSkanuj;
+ 
         string adresMAC;
         string adresIP;
         int stan = 0;
+
         public Form1()
         {
             InitializeComponent();
@@ -74,9 +78,9 @@ namespace WakeMeOnLan
             labelInfoP.Text = "";
         }
 
-        private void buttonSkanuj_Click(object sender, EventArgs e)
+        public void Skanuj()
         {
-            flowLayoutPanel.Controls.Clear();
+            flowLayoutPanel.Invoke(new Action(() => { flowLayoutPanel.Controls.Clear();}));
             var dc = DataContextSingleton.GetInstance();
 
             var sieci1 = dc.Sieci.ToList();
@@ -103,9 +107,11 @@ namespace WakeMeOnLan
                         {
                             if (ni.Name == "Wi-Fi" && (textBoxAdresIP.Text == "" || textBoxMaska.Text == "" || textBoxPorty.Text == ""))
                             {
-                                textBoxMaska.Text = ip.IPv4Mask.ToString();
-                                textBoxAdresIP.Text = ip.Address.ToString();
-                                textBoxPorty.Text = "80";
+                                flowLayoutPanel.Invoke(new Action(() => {
+                                    textBoxMaska.Text = ip.IPv4Mask.ToString();
+                                    textBoxAdresIP.Text = ip.Address.ToString();
+                                    textBoxPorty.Text = "80";
+                                }));
                             }
                         }
                     }
@@ -126,7 +132,6 @@ namespace WakeMeOnLan
                 //{
                 //    Console.WriteLine(IpAddress);
                 //}
-
 
                 foreach (IPAddress IpAddress in IpAddressList)
                 {
@@ -213,7 +218,9 @@ namespace WakeMeOnLan
                     int czy_byl = siec3.Czy_byl;
 
                     UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
-                    flowLayoutPanel.Controls.Add(userControl);
+                    flowLayoutPanel.Invoke(new Action(() => {
+                        flowLayoutPanel.Controls.Add(userControl);
+                    }));
                 }
             }
             else
@@ -221,11 +228,27 @@ namespace WakeMeOnLan
                 labelInfo.ForeColor = Color.Red;
                 labelInfo.Text = "Błędne dane adresu IP lub/i maski!";
             }
+
+            if (watekSkanuj != null && watekSkanuj.IsAlive)
+            {
+                watekSkanuj.Abort();
+                watekSkanuj.Join(); 
+            }
+        }
+
+        private void buttonSkanuj_Click(object sender, EventArgs e)
+        {
+            watekSkanuj = new Thread(Skanuj);
+            watekSkanuj.Start();
         }
 
         private void buttonAnuluj_Click(object sender, EventArgs e)
         {
-          
+            if (watekSkanuj != null && watekSkanuj.IsAlive)
+            {
+                watekSkanuj.Abort();
+                watekSkanuj.Join(); 
+            }
         }
     }
  }
