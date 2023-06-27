@@ -15,6 +15,7 @@ using IPAddresses;
 using System.Text.RegularExpressions;
 using System.Diagnostics.Eventing.Reader;
 using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WakeMeOnLan
 {
@@ -74,13 +75,34 @@ namespace WakeMeOnLan
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            flowLayoutPanel.Visible = false;
+            labelAdresIP.Visible = false;
+            labelAdresMAC.Visible = false;
+            labelStan.Visible = false;
+            buttonAnuluj.Enabled = false;
             labelInfo.Text = "";
             labelInfoP.Text = "";
         }
 
         public void SkanujPodsiec()
         {
-            flowLayoutPanel.Invoke(new Action(() => { flowLayoutPanel.Controls.Clear();}));
+            //flowLayoutPanel.Invoke(new Action(() => {
+            //    buttonAnuluj.Enabled = true;
+            //}));
+
+            listView.Invoke(new Action(() => {
+                listView.View = View.Details;
+                listView.GridLines = true;
+                listView.FullRowSelect = true;
+
+                buttonAnuluj.Enabled = true;
+                buttonSkanuj.Enabled = false;
+            }));
+
+            //flowLayoutPanel.Invoke(new Action(() => { flowLayoutPanel.Controls.Clear();}));
+
+            listView.Invoke(new Action(() => { listView.Items.Clear();}));
             var dc = DataContextSingleton.GetInstance();
 
             var sieci1 = dc.Sieci.ToList();
@@ -209,6 +231,42 @@ namespace WakeMeOnLan
                 }
                 dc.SubmitChanges();
 
+                listView.Invoke(new Action(() => {
+                  //  listView.Columns.Add("Stan", listView.Width/2);
+                    listView.Columns.Add("Adres IP", listView.Width/2);
+                    listView.Columns.Add("Adres MAC", listView.Width/2);
+                }));
+
+                string[] arr = new string[2];
+                ListViewItem itm;
+
+                var ContextMenuStrip = new ContextMenuStrip();
+                var ItemObudz = new ToolStripMenuItem("Obudź");
+
+                ItemObudz.Click += (sender, e) =>
+                {
+                    if (listView.FocusedItem != null)
+                    {
+                        string adres_IP = listView.FocusedItem.SubItems[1].Text;
+                        string adres_MAC = listView.FocusedItem.SubItems[2].Text;
+                        Obudz(adres_IP, adres_MAC);
+                    }
+                };
+
+                ContextMenuStrip.Items.Add(ItemObudz);
+
+                listView.MouseClick += (sender, e) =>
+                {
+                    if (e.Button == MouseButtons.Right)
+                    {
+                        if (listView.FocusedItem != null)
+                        {
+                            listView.FocusedItem.Selected = true;
+                            ContextMenuStrip.Show(listView, e.Location);
+                        }
+                    }
+                };
+
                 var sieci3 = dc.Sieci.ToList();
                 foreach (var siec3 in sieci3)
                 {
@@ -217,9 +275,33 @@ namespace WakeMeOnLan
                     int stan = siec3.Czy_obudzony;
                     int czy_byl = siec3.Czy_byl;
 
-                    UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC);
-                    flowLayoutPanel.Invoke(new Action(() => {
-                        flowLayoutPanel.Controls.Add(userControl);
+                    //UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC,textBoxMaska.Text);
+                    //flowLayoutPanel.Invoke(new Action(() => {
+                    //    flowLayoutPanel.Controls.Add(userControl);
+                    //}));
+
+                    listView.Invoke(new Action(() => {
+
+                        //arr[0] = stan.ToString();
+                        arr[0] = adres_IP;
+                        arr[1] = adres_MAC;
+
+                        itm = new ListViewItem(arr);
+                        if(stan == 0)
+                        {
+                            itm.BackColor = Color.Red;
+                        }
+                        else if(stan == 1)
+                        {
+                            itm.BackColor = Color.Green;
+                        }
+                        else
+                        {
+                            itm.BackColor = Color.Yellow;
+                        }
+
+                        listView.Items.Add(itm);
+
                     }));
                 }
             }
@@ -234,6 +316,9 @@ namespace WakeMeOnLan
                 watekSkanuj.Abort();
                 watekSkanuj.Join(); 
             }
+
+            buttonAnuluj.Enabled = false;
+            buttonSkanuj.Enabled = true;
         }
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
@@ -249,6 +334,22 @@ namespace WakeMeOnLan
                 watekSkanuj.Abort();
                 watekSkanuj.Join(); 
             }
+        }
+
+        private void Obudz(string adresIP, string adresMAC)
+        {
+                var dc = DataContextSingleton.GetInstance();
+                var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
+                if (si != null)
+                {
+                    si.Czy_obudzony = 1;
+                    dc.SubmitChanges();
+                }
+
+                //IPAddress IP = IPAddress.Parse("192.168.17.255");  
+                IPAddress IP = IPAddress.Parse(adresIP);
+                IPEndPoint target = new IPEndPoint(IP, 40000);
+                byte[] macAddress = Encoding.ASCII.GetBytes(adresMAC);
         }
     }
  }

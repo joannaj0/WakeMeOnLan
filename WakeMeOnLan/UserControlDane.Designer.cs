@@ -32,6 +32,9 @@
             this.labelAdresIPU = new System.Windows.Forms.Label();
             this.labelAdresMACU = new System.Windows.Forms.Label();
             this.buttonBudzenie = new System.Windows.Forms.Button();
+            this.textBoxPort = new System.Windows.Forms.TextBox();
+            this.buttonOK = new System.Windows.Forms.Button();
+            this.labelInfoPort = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonStan
@@ -62,7 +65,7 @@
             // 
             // buttonBudzenie
             // 
-            this.buttonBudzenie.Location = new System.Drawing.Point(477, 4);
+            this.buttonBudzenie.Location = new System.Drawing.Point(440, 5);
             this.buttonBudzenie.Name = "buttonBudzenie";
             this.buttonBudzenie.Size = new System.Drawing.Size(75, 23);
             this.buttonBudzenie.TabIndex = 3;
@@ -70,16 +73,47 @@
             this.buttonBudzenie.UseVisualStyleBackColor = true;
             this.buttonBudzenie.Click += new System.EventHandler(this.buttonBudzenie_Click);
             // 
+            // textBoxPort
+            // 
+            this.textBoxPort.Location = new System.Drawing.Point(521, 7);
+            this.textBoxPort.Name = "textBoxPort";
+            this.textBoxPort.Size = new System.Drawing.Size(100, 22);
+            this.textBoxPort.TabIndex = 4;
+            this.textBoxPort.Visible = false;
+            // 
+            // buttonOK
+            // 
+            this.buttonOK.Location = new System.Drawing.Point(625, 7);
+            this.buttonOK.Name = "buttonOK";
+            this.buttonOK.Size = new System.Drawing.Size(46, 23);
+            this.buttonOK.TabIndex = 5;
+            this.buttonOK.Text = "OK";
+            this.buttonOK.UseVisualStyleBackColor = true;
+            this.buttonOK.Visible = false;
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
+            // 
+            // labelInfoPort
+            // 
+            this.labelInfoPort.AutoSize = true;
+            this.labelInfoPort.Location = new System.Drawing.Point(546, 32);
+            this.labelInfoPort.Name = "labelInfoPort";
+            this.labelInfoPort.Size = new System.Drawing.Size(17, 16);
+            this.labelInfoPort.TabIndex = 6;
+            this.labelInfoPort.Text = "\"\"";
+            // 
             // UserControlDane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelInfoPort);
+            this.Controls.Add(this.buttonOK);
+            this.Controls.Add(this.textBoxPort);
             this.Controls.Add(this.buttonBudzenie);
             this.Controls.Add(this.labelAdresMACU);
             this.Controls.Add(this.labelAdresIPU);
             this.Controls.Add(this.buttonStan);
             this.Name = "UserControlDane";
-            this.Size = new System.Drawing.Size(567, 32);
+            this.Size = new System.Drawing.Size(674, 56);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,5 +125,8 @@
         private System.Windows.Forms.Label labelAdresIPU;
         private System.Windows.Forms.Label labelAdresMACU;
         private System.Windows.Forms.Button buttonBudzenie;
+        private System.Windows.Forms.TextBox textBoxPort;
+        private System.Windows.Forms.Button buttonOK;
+        private System.Windows.Forms.Label labelInfoPort;
     }
 }

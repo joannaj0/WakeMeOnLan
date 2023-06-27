@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyWakeOnLan" Version="3.0.31" />
     <PackageReference Include="IPAddressRange" Version="6.0.0" />
+    <PackageReference Include="WakeOnLAN" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>

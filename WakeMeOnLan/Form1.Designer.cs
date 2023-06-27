@@ -43,6 +43,7 @@
             this.labelInfoPorty = new System.Windows.Forms.Label();
             this.labelInfoP = new System.Windows.Forms.Label();
             this.buttonAnuluj = new System.Windows.Forms.Button();
+            this.listView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // buttonSkanuj
@@ -51,7 +52,7 @@
             this.buttonSkanuj.Name = "buttonSkanuj";
             this.buttonSkanuj.Size = new System.Drawing.Size(128, 31);
             this.buttonSkanuj.TabIndex = 0;
-            this.buttonSkanuj.Text = "SkanujPodsiec podsieć";
+            this.buttonSkanuj.Text = "Skanuj podsieć";
             this.buttonSkanuj.UseVisualStyleBackColor = true;
             this.buttonSkanuj.Click += new System.EventHandler(this.buttonSkanuj_Click);
             // 
@@ -86,7 +87,7 @@
             // 
             this.flowLayoutPanel.Location = new System.Drawing.Point(16, 159);
             this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(855, 472);
+            this.flowLayoutPanel.Size = new System.Drawing.Size(855, 16);
             this.flowLayoutPanel.TabIndex = 4;
             // 
             // textBoxAdresIP
@@ -175,11 +176,21 @@
             this.buttonAnuluj.UseVisualStyleBackColor = true;
             this.buttonAnuluj.Click += new System.EventHandler(this.buttonAnuluj_Click);
             // 
+            // listView
+            // 
+            this.listView.HideSelection = false;
+            this.listView.Location = new System.Drawing.Point(16, 181);
+            this.listView.Name = "listView";
+            this.listView.Size = new System.Drawing.Size(855, 435);
+            this.listView.TabIndex = 15;
+            this.listView.UseCompatibleStateImageBehavior = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(883, 643);
+            this.Controls.Add(this.listView);
             this.Controls.Add(this.buttonAnuluj);
             this.Controls.Add(this.labelInfoP);
             this.Controls.Add(this.labelInfoPorty);
@@ -220,6 +231,7 @@
         private System.Windows.Forms.Label labelInfoPorty;
         private System.Windows.Forms.Label labelInfoP;
         private System.Windows.Forms.Button buttonAnuluj;
+        private System.Windows.Forms.ListView listView;
     }
 }
 

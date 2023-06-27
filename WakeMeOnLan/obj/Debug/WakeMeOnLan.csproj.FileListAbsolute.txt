@@ -16,3 +16,10 @@ D:\Praktyki\WakeMeOnLan\WakeMeOnLan\obj\Debug\WakeMeOnLan.csproj.CopyComplete
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddresses.dll
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddresses.pdb
 D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\IPAddresses.xml
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\EasyWakeOnLan.dll
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\System.Diagnostics.DiagnosticSource.dll
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\System.ValueTuple.dll
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\WakeOnLan.dll
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\EasyWakeOnLan.pdb
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\System.Diagnostics.DiagnosticSource.xml
+D:\Praktyki\WakeMeOnLan\WakeMeOnLan\bin\Debug\System.ValueTuple.xml
