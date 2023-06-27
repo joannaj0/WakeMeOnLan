@@ -240,12 +240,12 @@ namespace WakeMeOnLan
                 dc.SubmitChanges();
 
                 listView.Invoke(new Action(() => {
-                      //listView.Columns.Add("Stan", listView.Width/3);
-                        listView.Columns.Add("Adres IP", listView.Width/2);
-                        listView.Columns.Add("Adres MAC", listView.Width/2);
+                        listView.Columns.Add("Stan", 40);
+                        listView.Columns.Add("Adres IP", (listView.Width-40)/2);
+                        listView.Columns.Add("Adres MAC", (listView.Width-40)/2);
                 }));
 
-                string[] dane = new string[2];
+                string[] dane = new string[3];
                 ListViewItem item;
 
                 var ContextMenuStrip = new ContextMenuStrip();
@@ -255,8 +255,8 @@ namespace WakeMeOnLan
                 {
                     if (listView.FocusedItem != null)
                     {
-                        string adres_IP = listView.FocusedItem.SubItems[0].Text;
-                        string adres_MAC = listView.FocusedItem.SubItems[1].Text;
+                        string adres_IP = listView.FocusedItem.SubItems[1].Text;
+                        string adres_MAC = listView.FocusedItem.SubItems[2].Text;
                         Obudz(adres_IP, adres_MAC, listView);
                     }
                 };
@@ -291,24 +291,31 @@ namespace WakeMeOnLan
                     listView.Invoke(new Action(() => {
 
                         //arr[0] = stan.ToString();
-                        dane[0] = adres_IP;
-                        dane[1] = adres_MAC;
+                        dane[1] = adres_IP;
+                        dane[2] = adres_MAC;
 
                         item = new ListViewItem(dane);
-                        if(stan == 0)
+                        item.UseItemStyleForSubItems = false;
+                        if (stan == 0)
                         {
-                            item.BackColor = Color.Red;
+                             item.SubItems[0].BackColor = Color.Red;
                         }
                         else if(stan == 1)
                         {
-                            item.BackColor = Color.Green;
+                            item.SubItems[0].BackColor = Color.Green;
                         }
                         else
                         {
-                            item.BackColor = Color.Yellow;
+                            item.SubItems[0].BackColor = Color.Yellow;
                         }
 
                         listView.Items.Add(item);
+
+                        foreach (ColumnHeader column in listView.Columns)
+                        {
+                            column.TextAlign = HorizontalAlignment.Center;
+                        }
+
 
                     }));
                 }
@@ -359,9 +366,10 @@ namespace WakeMeOnLan
 
             foreach (ListViewItem item in listView.Items)
             {
-                if (item.SubItems[0].Text == adresIP && item.SubItems[1].Text == adresMAC)
+                if (item.SubItems[1].Text == adresIP && item.SubItems[2].Text == adresMAC)
                 {
-                    item.BackColor = Color.Green;
+                    item.UseItemStyleForSubItems = false;
+                    item.SubItems[0].BackColor = Color.Green;
                     break;
                 }
             }
