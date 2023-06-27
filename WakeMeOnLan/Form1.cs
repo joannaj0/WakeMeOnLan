@@ -16,6 +16,8 @@ using System.Text.RegularExpressions;
 using System.Diagnostics.Eventing.Reader;
 using System.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Diagnostics;
+using System.Net.Mail;
 
 namespace WakeMeOnLan
 {
@@ -290,7 +292,6 @@ namespace WakeMeOnLan
 
                     listView.Invoke(new Action(() => {
 
-                        //arr[0] = stan.ToString();
                         dane[1] = adres_IP;
                         dane[2] = adres_MAC;
 
@@ -356,6 +357,7 @@ namespace WakeMeOnLan
 
         private void Obudz(string adresIP, string adresMAC, System.Windows.Forms.ListView listView)
         {
+            string dadresMAC;
             var dc = DataContextSingleton.GetInstance();
             var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
             if (si != null)
@@ -374,11 +376,18 @@ namespace WakeMeOnLan
                 }
             }
 
+            dadresMAC = Regex.Replace(adresMAC, "-", "");
+            MessageBox.Show(dadresMAC);
+            Process process = new Process();
+            process.StartInfo.FileName = "cmd.exe";
+            process.StartInfo.Arguments = "/C wol " + adresMAC;
+            process.Start();
+
             //IPAddress IP = IPAddress.Parse("192.168.17.255");  
-            IPAddress IP = IPAddress.Parse(adresIP);
-            IPEndPoint target = new IPEndPoint(IP, 40000);
-            byte[] macAddress = Encoding.ASCII.GetBytes(adresMAC);
-            MagicPacket.Send(target, macAddress);
+            //IPAddress IP = IPAddress.Parse(adresIP);
+            //IPEndPoint target = new IPEndPoint(IP, 40000);
+            //byte[] macAddress = Encoding.ASCII.GetBytes(adresMAC);
+            //MagicPacket.Send(target, macAddress);
         }
     }
  }
