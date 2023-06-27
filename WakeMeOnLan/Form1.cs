@@ -61,15 +61,15 @@ namespace WakeMeOnLan
             return string.Join("-", str);
         }
 
-        static bool SprawdzCzyOk(string nazwa)
+        static bool SprawdzCzyOk(string adres)
         {
             string wzorzec = @"^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$";
-            return Regex.IsMatch(nazwa, wzorzec);
+            return Regex.IsMatch(adres, wzorzec);
         }
 
-        public List<string> DajNumerPortu(string nazwa)
+        public List<string> DajNumeryPortow(string tekst)
         {
-            List<string> numery = new List<string>(nazwa.Split(','));
+            List<string> numery = new List<string>(tekst.Split(','));
             return numery;
         }
 
@@ -81,8 +81,7 @@ namespace WakeMeOnLan
             labelAdresMAC.Visible = false;
             labelStan.Visible = false;
             buttonAnuluj.Enabled = false;
-            labelInfo.Text = "";
-            labelInfoP.Text = "";
+            labelInfoAdresy.Text = "";
         }
 
         public void SkanujPodsiec()
@@ -103,10 +102,10 @@ namespace WakeMeOnLan
             //flowLayoutPanel.Invoke(new Action(() => { flowLayoutPanel.Controls.Clear();}));
 
             listView.Invoke(new Action(() => { listView.Items.Clear();}));
+
             var dc = DataContextSingleton.GetInstance();
 
             var sieci1 = dc.Sieci.ToList();
-
             foreach (var siec1 in sieci1)
             {
                 siec1.Czy_byl = 0;
@@ -115,14 +114,18 @@ namespace WakeMeOnLan
 
             IPGlobalProperties computerProperties = IPGlobalProperties.GetIPGlobalProperties();
             NetworkInterface[] nic = NetworkInterface.GetAllNetworkInterfaces();
+
             //Console.WriteLine("Ilosc: {0} ", nic.Length);
             //Console.WriteLine();
+
             foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
             {
                 if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || ni.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
                 {
+
                     //Console.WriteLine(ni.Name);
                     //Console.WriteLine(ni.GetPhysicalAddress().ToString());
+
                     foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
                     {
                         if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
@@ -138,16 +141,16 @@ namespace WakeMeOnLan
                         }
                     }
                 }
+
                 //Console.WriteLine();
+
             }
 
-            //MessageBox.Show("xxx");
-            List<string> numeryPortow = DajNumerPortu(textBoxPorty.Text);
-
+            List<string> numeryPortow = DajNumeryPortow(textBoxPorty.Text);
 
             if (SprawdzCzyOk(textBoxMaska.Text) == true && SprawdzCzyOk(textBoxAdresIP.Text) == true)
             {
-                labelInfo.Text = "";
+                labelInfoAdresy.Text = "";
                 List<IPAddress> IpAddressList = IpAdressesClass.GetUsableIPForSubnet(textBoxAdresIP.Text, textBoxMaska.Text);
 
                 //foreach (IPAddress IpAddress in IpAddressList)
@@ -167,11 +170,14 @@ namespace WakeMeOnLan
                         {
                             //Console.WriteLine("Status: *** \n Port:" + port + " \n Adres IP: " + IpAddress.ToString());
                             //Console.WriteLine();
+
                             if (IsHostUp(IpAddress.ToString(), int.Parse(port)) == true)
                             {
                                 adresMAC = GetMacAddress(IpAddress.ToString());
+
                                 Console.WriteLine("Status: Success \n Port:" + port + " \n Adres IP: " + IpAddress.ToString() + " \n Adres MAC : " + adresMAC);
                                 Console.WriteLine();
+
                                 adresIP = IpAddress.ToString();
                                 stan = 1;
                                 bool exists = dc.Sieci.Any(s => s.Adres_IP == adresIP && s.Adres_MAC == adresMAC);
@@ -214,7 +220,9 @@ namespace WakeMeOnLan
                     char[] ktore_sa = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
                     string po_obcieciu = przed_obcieciem.TrimEnd(ktore_sa);
                     string adresIP_pocz = textBoxAdresIP.Text.TrimEnd(ktore_sa);
+
                     //Console.WriteLine(po_obcieciu);
+
                     if (siec2.Czy_byl == 1)
                     {
                         siec2.Czy_obudzony = 1;
@@ -232,28 +240,28 @@ namespace WakeMeOnLan
                 dc.SubmitChanges();
 
                 listView.Invoke(new Action(() => {
-                  //  listView.Columns.Add("Stan", listView.Width/2);
-                    listView.Columns.Add("Adres IP", listView.Width/2);
-                    listView.Columns.Add("Adres MAC", listView.Width/2);
+                      //listView.Columns.Add("Stan", listView.Width/3);
+                        listView.Columns.Add("Adres IP", listView.Width/2);
+                        listView.Columns.Add("Adres MAC", listView.Width/2);
                 }));
 
-                string[] arr = new string[2];
-                ListViewItem itm;
+                string[] dane = new string[2];
+                ListViewItem item;
 
                 var ContextMenuStrip = new ContextMenuStrip();
-                var ItemObudz = new ToolStripMenuItem("Obudź");
+                var itemObudz = new ToolStripMenuItem("Obudź");
 
-                ItemObudz.Click += (sender, e) =>
+                itemObudz.Click += (sender, e) =>
                 {
                     if (listView.FocusedItem != null)
                     {
-                        string adres_IP = listView.FocusedItem.SubItems[1].Text;
-                        string adres_MAC = listView.FocusedItem.SubItems[2].Text;
-                        Obudz(adres_IP, adres_MAC);
+                        string adres_IP = listView.FocusedItem.SubItems[0].Text;
+                        string adres_MAC = listView.FocusedItem.SubItems[1].Text;
+                        Obudz(adres_IP, adres_MAC, listView);
                     }
                 };
 
-                ContextMenuStrip.Items.Add(ItemObudz);
+                ContextMenuStrip.Items.Add(itemObudz);
 
                 listView.MouseClick += (sender, e) =>
                 {
@@ -277,48 +285,49 @@ namespace WakeMeOnLan
 
                     //UserControlDane userControl = new UserControlDane(stan, adres_IP, adres_MAC,textBoxMaska.Text);
                     //flowLayoutPanel.Invoke(new Action(() => {
-                    //    flowLayoutPanel.Controls.Add(userControl);
+                    //flowLayoutPanel.Controls.Add(userControl);
                     //}));
 
                     listView.Invoke(new Action(() => {
 
                         //arr[0] = stan.ToString();
-                        arr[0] = adres_IP;
-                        arr[1] = adres_MAC;
+                        dane[0] = adres_IP;
+                        dane[1] = adres_MAC;
 
-                        itm = new ListViewItem(arr);
+                        item = new ListViewItem(dane);
                         if(stan == 0)
                         {
-                            itm.BackColor = Color.Red;
+                            item.BackColor = Color.Red;
                         }
                         else if(stan == 1)
                         {
-                            itm.BackColor = Color.Green;
+                            item.BackColor = Color.Green;
                         }
                         else
                         {
-                            itm.BackColor = Color.Yellow;
+                            item.BackColor = Color.Yellow;
                         }
 
-                        listView.Items.Add(itm);
+                        listView.Items.Add(item);
 
                     }));
                 }
             }
             else
             {
-                labelInfo.ForeColor = Color.Red;
-                labelInfo.Text = "Błędne dane adresu IP lub/i maski!";
+                labelInfoAdresy.ForeColor = Color.Red;
+                labelInfoAdresy.Text = "Błędne dane adresu IP lub/i maski!";
             }
 
             if (watekSkanuj != null && watekSkanuj.IsAlive)
             {
+                listView.Invoke(new Action(() => {
+                    buttonAnuluj.Enabled = false;
+                    buttonSkanuj.Enabled = true;
+                }));
                 watekSkanuj.Abort();
                 watekSkanuj.Join(); 
             }
-
-            buttonAnuluj.Enabled = false;
-            buttonSkanuj.Enabled = true;
         }
 
         private void buttonSkanuj_Click(object sender, EventArgs e)
@@ -331,25 +340,37 @@ namespace WakeMeOnLan
         {
             if (watekSkanuj != null && watekSkanuj.IsAlive)
             {
+                buttonAnuluj.Enabled = false;
+                buttonSkanuj.Enabled = true;
                 watekSkanuj.Abort();
                 watekSkanuj.Join(); 
             }
         }
 
-        private void Obudz(string adresIP, string adresMAC)
+        private void Obudz(string adresIP, string adresMAC, System.Windows.Forms.ListView listView)
         {
-                var dc = DataContextSingleton.GetInstance();
-                var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
-                if (si != null)
-                {
-                    si.Czy_obudzony = 1;
-                    dc.SubmitChanges();
-                }
+            var dc = DataContextSingleton.GetInstance();
+            var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
+            if (si != null)
+            {
+                  si.Czy_obudzony = 1;
+                  dc.SubmitChanges();
+            }
 
-                //IPAddress IP = IPAddress.Parse("192.168.17.255");  
-                IPAddress IP = IPAddress.Parse(adresIP);
-                IPEndPoint target = new IPEndPoint(IP, 40000);
-                byte[] macAddress = Encoding.ASCII.GetBytes(adresMAC);
+            foreach (ListViewItem item in listView.Items)
+            {
+                if (item.SubItems[0].Text == adresIP && item.SubItems[1].Text == adresMAC)
+                {
+                    item.BackColor = Color.Green;
+                    break;
+                }
+            }
+
+            //IPAddress IP = IPAddress.Parse("192.168.17.255");  
+            IPAddress IP = IPAddress.Parse(adresIP);
+            IPEndPoint target = new IPEndPoint(IP, 40000);
+            byte[] macAddress = Encoding.ASCII.GetBytes(adresMAC);
+            MagicPacket.Send(target, macAddress);
         }
     }
  }

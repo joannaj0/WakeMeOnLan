@@ -75,7 +75,7 @@
             // 
             // textBoxPort
             // 
-            this.textBoxPort.Location = new System.Drawing.Point(521, 7);
+            this.textBoxPort.Location = new System.Drawing.Point(552, 7);
             this.textBoxPort.Name = "textBoxPort";
             this.textBoxPort.Size = new System.Drawing.Size(100, 22);
             this.textBoxPort.TabIndex = 4;
@@ -83,7 +83,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(625, 7);
+            this.buttonOK.Location = new System.Drawing.Point(658, 6);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(46, 23);
             this.buttonOK.TabIndex = 5;
@@ -95,7 +95,7 @@
             // labelInfoPort
             // 
             this.labelInfoPort.AutoSize = true;
-            this.labelInfoPort.Location = new System.Drawing.Point(546, 32);
+            this.labelInfoPort.Location = new System.Drawing.Point(574, 32);
             this.labelInfoPort.Name = "labelInfoPort";
             this.labelInfoPort.Size = new System.Drawing.Size(17, 16);
             this.labelInfoPort.TabIndex = 6;
@@ -113,7 +113,7 @@
             this.Controls.Add(this.labelAdresIPU);
             this.Controls.Add(this.buttonStan);
             this.Name = "UserControlDane";
-            this.Size = new System.Drawing.Size(674, 56);
+            this.Size = new System.Drawing.Size(730, 56);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -18,60 +18,50 @@ namespace WakeMeOnLan
 {
     public partial class UserControlDane : UserControl
     {
-        //string maska;
+        //string mask;
         int port;
         public UserControlDane()
         {
             InitializeComponent();
-            buttonStan.BackColor = Color.White;
-            labelAdresIPU.Text = "";
-            labelAdresMACU.Text = "";
-            buttonBudzenie.Enabled = false;
-            buttonOK.Visible = false;
-            textBoxPort.Visible = false;
-            labelInfoPort.Text = "";
         }
 
-        public UserControlDane(int stan, string adresIP, string MACadres,string m)
+        public UserControlDane(int stan, string adresIP, string adresMAC,string maska)
         {
-            //maska = m;
             InitializeComponent();
+            labelInfoPort.Text = "";
+            //mask = maska;
             if (stan == 0)
             {
                 buttonStan.BackColor = Color.Red;
-                buttonBudzenie.Enabled = true;
             }
             else if (stan == 1)
             {
                 buttonStan.BackColor = Color.Green;
-                buttonBudzenie.Enabled = true;
             }
             else
             {
                 buttonStan.BackColor = Color.Yellow;
-                buttonBudzenie.Enabled = true;
             }
             labelAdresIPU.Text = adresIP;
-            labelAdresMACU.Text = MACadres;
+            labelAdresMACU.Text = adresMAC;
         }
 
         private void buttonBudzenie_Click(object sender, EventArgs e)
         {
+            buttonBudzenie.Enabled = false;
             textBoxPort.Visible = true;
             buttonOK.Visible = true;
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-
-            //var wolClient = new EasyWakeOnLanClient();
-            //wolClient.Wake(labelAdresMACU.Text);
-
             port = int.Parse(textBoxPort.Text);
             if (port > 0 && port <= 65535)
             { 
                 buttonStan.BackColor = Color.Green;
-                buttonBudzenie.Enabled = false;
+                buttonBudzenie.Enabled = true;
+                textBoxPort.Visible = false;
+                buttonOK.Visible = false;
                 var dc = DataContextSingleton.GetInstance();
                 var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == labelAdresIPU.Text && x.Adres_MAC == labelAdresMACU.Text);
                 if (si != null)
@@ -80,16 +70,21 @@ namespace WakeMeOnLan
                     dc.SubmitChanges();
                 }
 
+                //var wolClient = new EasyWakeOnLanClient();
+                //wolClient.Wake(labelAdresMACU.Text);
+
                 //IPAddress IP = IPAddress.Parse("192.168.17.255");  
                 IPAddress IP = IPAddress.Parse(labelAdresIPU.Text);
                 IPEndPoint target = new IPEndPoint(IP, port);
                 byte[] macAddress = Encoding.ASCII.GetBytes(labelAdresMACU.Text);
+                MagicPacket.Send(target, macAddress);
+                
             }
             else
             {
-                labelInfoPort.Text = "Błędny numer portu";
+                labelInfoPort.ForeColor = Color.Red;
+                labelInfoPort.Text = "Błędny numer portu. ";
             }
-
 
 
             /*var macAddress = labelAdresMACU.Text;                     
@@ -119,7 +114,7 @@ namespace WakeMeOnLan
                 }
             }
 
-            sock.SendTo(payload, new IPEndPoint(IPAddress.Parse(maska), 0));  // Broadcast our packet
+            sock.SendTo(payload, new IPEndPoint(IPAddress.Parse(mask), 0));
             sock.Close(10000);*/
         }
     }
