@@ -18,6 +18,8 @@ using System.Threading;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Diagnostics;
 using System.Net.Mail;
+using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace WakeMeOnLan
 {
@@ -357,31 +359,50 @@ namespace WakeMeOnLan
 
         private void Obudz(string adresIP, string adresMAC, System.Windows.Forms.ListView listView)
         {
-            string dadresMAC;
-            var dc = DataContextSingleton.GetInstance();
-            var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
-            if (si != null)
-            {
-                  si.Czy_obudzony = 1;
-                  dc.SubmitChanges();
-            }
 
-            foreach (ListViewItem item in listView.Items)
+            //dadresMAC = Regex.Replace(adresMAC, "-", "");
+            string fileName = "wol";
+            Process process_sprawdzenie = new Process();
+            process_sprawdzenie.StartInfo.FileName = fileName;
+            process_sprawdzenie.StartInfo.Arguments = "-v";
+            try
             {
-                if (item.SubItems[1].Text == adresIP && item.SubItems[2].Text == adresMAC)
+                process_sprawdzenie.Start();
+                process_sprawdzenie.WaitForExit();
+                Process process = new Process();
+                process.StartInfo.FileName = fileName;
+                process.StartInfo.Arguments = adresMAC;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                Console.WriteLine($"Exit code: {process.ExitCode}");
+                Console.WriteLine(output);
+
+                string dadresMAC;
+                var dc = DataContextSingleton.GetInstance();
+                var si = dc.Sieci.FirstOrDefault(x => x.Adres_IP == adresIP && x.Adres_MAC == adresMAC);
+                if (si != null)
                 {
-                    item.UseItemStyleForSubItems = false;
-                    item.SubItems[0].BackColor = Color.Green;
-                    break;
+                    si.Czy_obudzony = 1;
+                    dc.SubmitChanges();
+                }
+
+                foreach (ListViewItem item in listView.Items)
+                {
+                    if (item.SubItems[1].Text == adresIP && item.SubItems[2].Text == adresMAC)
+                    {
+                        item.UseItemStyleForSubItems = false;
+                        item.SubItems[0].BackColor = Color.Green;
+                        break;
+                    }
                 }
             }
-
-            dadresMAC = Regex.Replace(adresMAC, "-", "");
-            MessageBox.Show(dadresMAC);
-            Process process = new Process();
-            process.StartInfo.FileName = "cmd.exe";
-            process.StartInfo.Arguments = "/C wol " + adresMAC;
-            process.Start();
+            catch(Exception e)
+            {
+                Console.WriteLine("Podales bledna nazwe pliku. ");
+            }
 
             //IPAddress IP = IPAddress.Parse("192.168.17.255");  
             //IPAddress IP = IPAddress.Parse(adresIP);
